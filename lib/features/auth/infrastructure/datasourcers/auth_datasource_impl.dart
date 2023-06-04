@@ -26,9 +26,11 @@ class AuthDataSourceImpl extends AuthDatasource {
       });
 
       final user = UserMapper.userJsonToEntity(response.data);
+      print(user);
 
       return user;
     } catch (e) {
+      print(e);
       throw WrongCredentials();
     }
   }
