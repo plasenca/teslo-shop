@@ -53,10 +53,10 @@ packages:
     dependency: "direct main"
     description:
       name: dio
-      sha256: "2644a9e0965a7aa3deb09cb8ce4081db4450c178f472818c8cd34216a3070d7b"
+      sha256: "347d56c26d63519552ef9a569f2a593dda99a81fdbdff13c584b7197cfe05059"
       url: "https://pub.dev"
     source: hosted
-    version: "5.0.2"
+    version: "5.1.2"
   fake_async:
     dependency: transitive
     description:
