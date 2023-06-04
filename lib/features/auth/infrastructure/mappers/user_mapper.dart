@@ -1,7 +1,7 @@
 import 'package:teslo_shop/features/auth/domain/domain.dart' show User;
 
 class UserMapper {
-  static userJsonToEntity(Map<String, dynamic> json) {
+  static User userJsonToEntity(Map<String, dynamic> json) {
     return User(
       id: json['id'],
       email: json['email'],
