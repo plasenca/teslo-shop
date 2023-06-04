@@ -4,7 +4,7 @@ import 'package:teslo_shop/config/config.dart';
 import 'package:teslo_shop/config/router/app_router.dart';
 
 void main() async {
-  Environment.initEnvironment();
+  await Environment.initEnvironment();
 
   runApp(
     ProviderScope(
