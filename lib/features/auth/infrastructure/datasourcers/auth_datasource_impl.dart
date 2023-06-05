@@ -4,7 +4,7 @@ import 'package:teslo_shop/config/config.dart' show Environment;
 import 'package:teslo_shop/features/auth/domain/domain.dart'
     show AuthDatasource, User;
 import 'package:teslo_shop/features/auth/infrastructure/infrastructure.dart'
-    show UserMapper, WrongCredentials;
+    show UserMapper, WrongCredentials, ConnectionTimeOut, CustomError;
 
 class AuthDataSourceImpl extends AuthDatasource {
   final dio = Dio(BaseOptions(
@@ -26,12 +26,22 @@ class AuthDataSourceImpl extends AuthDatasource {
       });
 
       final user = UserMapper.userJsonToEntity(response.data);
-      print(user);
 
       return user;
+    } on DioError catch (e) {
+      if (e.type == DioErrorType.connectionTimeout) throw ConnectionTimeOut();
+
+      if (e.response?.statusCode == 401) throw WrongCredentials();
+
+      throw CustomError(
+        statusCode: e.response?.statusCode ?? 1,
+        message: e.response?.statusMessage ?? 'Error no controlado',
+      );
     } catch (e) {
-      print(e);
-      throw WrongCredentials();
+      throw CustomError(
+        statusCode: 1,
+        message: 'Error no controlado',
+      );
     }
   }
 
