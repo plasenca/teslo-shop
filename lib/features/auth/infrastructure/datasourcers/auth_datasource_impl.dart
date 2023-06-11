@@ -4,7 +4,12 @@ import 'package:teslo_shop/config/config.dart' show Environment;
 import 'package:teslo_shop/features/auth/domain/domain.dart'
     show AuthDatasource, User;
 import 'package:teslo_shop/features/auth/infrastructure/infrastructure.dart'
-    show UserMapper, WrongCredentials, ConnectionTimeOut, CustomError;
+    show
+        UserMapper,
+        WrongCredentials,
+        ConnectionTimeOut,
+        CustomError,
+        TokenNotValid;
 
 class AuthDataSourceImpl extends AuthDatasource {
   final dio = Dio(BaseOptions(
@@ -12,9 +17,39 @@ class AuthDataSourceImpl extends AuthDatasource {
   ));
 
   @override
-  Future<User> checkAuthStatus(String token) {
-    // TODO: implement checkAuthStatus
-    throw UnimplementedError();
+  Future<User> checkAuthStatus(String token) async {
+    try {
+      final response = await dio.get(
+        '/auth/check-status',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+
+      final user = UserMapper.userJsonToEntity(response.data);
+
+      return user;
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 401) {
+        throw TokenNotValid();
+      }
+
+      if (e.type == DioErrorType.connectionTimeout) {
+        throw ConnectionTimeOut();
+      }
+
+      throw CustomError(
+        statusCode: e.response?.statusCode ?? 1,
+        message: e.response?.statusMessage ?? 'Error no controlado',
+      );
+    } catch (e) {
+      throw CustomError(
+        statusCode: 1,
+        message: 'Error no controlado',
+      );
+    }
   }
 
   @override
