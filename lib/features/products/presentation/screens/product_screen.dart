@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -45,18 +46,21 @@ class _ProductView extends StatelessWidget {
   Widget build(BuildContext context) {
     final textStyles = Theme.of(context).textTheme;
 
-    return ListView(
-      children: [
-        SizedBox(
-          height: 250,
-          width: 600,
-          child: _ImageGallery(images: product.images),
-        ),
-        const SizedBox(height: 10),
-        Center(child: Text(product.title, style: textStyles.titleSmall)),
-        const SizedBox(height: 10),
-        _ProductInformation(product: product),
-      ],
+    return FadeIn(
+      duration: const Duration(milliseconds: 500),
+      child: ListView(
+        children: [
+          SizedBox(
+            height: 250,
+            width: 600,
+            child: _ImageGallery(images: product.images),
+          ),
+          const SizedBox(height: 10),
+          Center(child: Text(product.title, style: textStyles.titleSmall)),
+          const SizedBox(height: 10),
+          _ProductInformation(product: product),
+        ],
+      ),
     );
   }
 }
