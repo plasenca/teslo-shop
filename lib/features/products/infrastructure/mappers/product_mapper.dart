@@ -23,4 +23,44 @@ class ProductMapper {
         ),
         user: UserMapper.userJsonToEntity(json['user']),
       );
+
+  static Map<String, dynamic> toJsonWithEntity({
+    required Product product,
+  }) =>
+      {
+        "id": product.id,
+        "title": product.title,
+        "price": product.price,
+        "description": product.description,
+        "slug": product.slug,
+        "stock": product.stock,
+        "sizes": product.sizes,
+        "gender": product.gender,
+        "tags": product.tags,
+        "images": product.images,
+      };
+  static Map<String, dynamic> toJsonWithRaw({
+    required String? id,
+    required String title,
+    required double price,
+    required String description,
+    required String slug,
+    required int stock,
+    required List<String> sizes,
+    required String gender,
+    required List<String> tags,
+    required List<String> images,
+  }) =>
+      {
+        "id": id,
+        "title": title,
+        "price": price,
+        "description": description,
+        "slug": slug,
+        "stock": stock,
+        "sizes": sizes,
+        "gender": gender,
+        "tags": tags,
+        "images": images,
+      };
 }

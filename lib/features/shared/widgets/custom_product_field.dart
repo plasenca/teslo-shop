@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CustomProductField extends StatelessWidget {
   final bool isTopField; // La idea es que tenga bordes redondeados arriba
@@ -13,6 +14,7 @@ class CustomProductField extends StatelessWidget {
   final Function(String)? onChanged;
   final Function(String)? onFieldSubmitted;
   final String? Function(String?)? validator;
+  final List<TextInputFormatter> inputFormatters;
 
   const CustomProductField({
     super.key,
@@ -28,6 +30,7 @@ class CustomProductField extends StatelessWidget {
     this.onChanged,
     this.onFieldSubmitted,
     this.validator,
+    this.inputFormatters = const [],
   });
 
   @override
@@ -63,6 +66,7 @@ class CustomProductField extends StatelessWidget {
         validator: validator,
         obscureText: obscureText,
         keyboardType: keyboardType,
+        inputFormatters: inputFormatters,
         style: const TextStyle(fontSize: 15, color: Colors.black54),
         maxLines: maxLines,
         initialValue: initialValue,

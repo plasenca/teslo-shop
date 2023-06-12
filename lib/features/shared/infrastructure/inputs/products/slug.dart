@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:formz/formz.dart';
 
 // Define input validation errors
@@ -21,6 +22,10 @@ class Slug extends FormzInput<String, SlugError> {
 
     return null;
   }
+
+  List<TextInputFormatter> get inputFormatters => [
+        FilteringTextInputFormatter.deny(RegExp(r"\s\b|\b\s")),
+      ];
 
   // Override validator to handle validating a given input value.
   @override

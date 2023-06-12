@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:formz/formz.dart';
 
 // Define input validation errors
@@ -15,10 +16,16 @@ class Price extends FormzInput<double, PriceError> {
     if (isValid || isPure) return null;
 
     if (displayError == PriceError.empty) return 'El campo es requerido';
-    if (displayError == PriceError.value) return 'El valor debe ser mayor a 0';
+    if (displayError == PriceError.value) {
+      return 'El valor debe ser un número mayor o igual 0';
+    }
 
     return null;
   }
+
+  List<TextInputFormatter> get inputFormatters => [
+        FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}')),
+      ];
 
   // Override validator to handle validating a given input value.
   @override
