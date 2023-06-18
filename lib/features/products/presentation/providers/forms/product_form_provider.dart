@@ -48,7 +48,7 @@ class ProductFormNotifier extends StateNotifier<ProductFormState> {
     if (onSubmitt == null) return false;
 
     final productLike = ProductMapper.toJsonWithRaw(
-      id: state.id,
+      id: state.id == "new" ? null : state.id,
       description: state.description,
       gender: state.gender,
       price: state.price.value,
