@@ -8,14 +8,19 @@ import 'package:teslo_shop/features/products/products.dart';
 final productFormProvider = StateNotifierProvider.autoDispose
     .family<ProductFormNotifier, ProductFormState, Product>(
   (ref, product) {
-    //TODO: Create update callback
+    // final createUpdateCallback = ref.watch(productsRepositoryProvider);
+    final createUpdateCallback =
+        ref.watch(productsProvider.notifier).createOrUpdateProduct;
 
-    return ProductFormNotifier(product: product);
+    return ProductFormNotifier(
+      product: product,
+      onSubmitt: createUpdateCallback,
+    );
   },
 );
 
 class ProductFormNotifier extends StateNotifier<ProductFormState> {
-  final void Function(Map<String, dynamic> productLike)? onSubmitt;
+  final Future<bool> Function(Map<String, dynamic> productLike)? onSubmitt;
 
   ProductFormNotifier({
     this.onSubmitt,
@@ -38,7 +43,7 @@ class ProductFormNotifier extends StateNotifier<ProductFormState> {
   Future<bool> onFormSubmit() async {
     _touchedEverything();
 
-    if (state.isFormValid) return false;
+    if (!state.isFormValid) return false;
 
     if (onSubmitt == null) return false;
 
@@ -60,7 +65,11 @@ class ProductFormNotifier extends StateNotifier<ProductFormState> {
           .toList(),
     );
 
-    return true;
+    try {
+      return await onSubmitt!(productLike);
+    } catch (e) {
+      return false;
+    }
   }
 
   void _touchedEverything() {

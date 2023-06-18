@@ -1,5 +1,5 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:teslo_shop/features/products/products.dart';
@@ -29,10 +29,16 @@ class ProductScreen extends ConsumerWidget {
           : _ProductView(
               product: productState.product!,
             ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.save_outlined),
-      ),
+      floatingActionButton: productState.product == null
+          ? null
+          : FloatingActionButton(
+              onPressed: () {
+                ref
+                    .read(productFormProvider(productState.product!).notifier)
+                    .onFormSubmit();
+              },
+              child: const Icon(Icons.save_outlined),
+            ),
     );
   }
 }
@@ -62,6 +68,7 @@ class _ProductView extends ConsumerWidget {
             child: Text(
               productForm.title.value,
               style: textStyles.titleSmall,
+              textAlign: TextAlign.center,
             ),
           ),
           const SizedBox(height: 10),
